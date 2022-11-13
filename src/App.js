@@ -1,14 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './Routes/Routes';
 
 function App() {
- const router =  createBrowserRouter([
-    {path:'/', element: <div>Home</div>}
-  ])
-  return (
 
-    <RouterProvider router={router}/>
+  return (
+    <div className='max-w-[1440px] mx-auto '> 
+      <RouterProvider router={router} />
+
+    </div>
   );
 }
 
