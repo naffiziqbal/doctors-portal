@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import UserContext, { AuthProvider } from "../../../../USerContext/UserContext";
 
 const Signup = () => {
-    const handleSubmit =()=>{
-
-    }
+  const { createUser } = useContext(AuthProvider);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div>
       <div>
@@ -52,7 +63,13 @@ const Signup = () => {
                     Sign Up
                   </button>
                 </div>
-                <p>Already have an Account ? <Link to={'/login'} className ="text-blue-500"> Log In</Link></p>
+                <p>
+                  Already have an Account ?{" "}
+                  <Link to={"/login"} className="text-blue-500">
+                    {" "}
+                    Log In
+                  </Link>
+                </p>
               </form>
               <p className="text-center">Or</p>
               <hr />

@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthProvider } from "../../../../USerContext/UserContext";
 
 const Login = () => {
-  const handleSubmit = () => {};
+  const { loginUser } = useContext(AuthProvider);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    loginUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div>
       <div className="hero min-h-screen bg-base-200">
@@ -39,9 +52,17 @@ const Login = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary" type="submit">Login</button>
+                <button className="btn btn-primary" type="submit">
+                  Login
+                </button>
               </div>
-              <p>New To Doctors Portal ? <Link to={'/signup'} className ="text-blue-500"> Create new account</Link></p>
+              <p>
+                New To Doctors Portal ?{" "}
+                <Link to={"/signup"} className="text-blue-500">
+                  {" "}
+                  Create new account
+                </Link>
+              </p>
             </form>
             <p className="text-center">Or</p>
             <hr />

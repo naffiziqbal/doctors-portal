@@ -1,12 +1,17 @@
 import React from "react";
-import  bannerImg  from "../../../../assets/images/chair.png";
+import bannerImg from "../../../../assets/images/chair.png";
+import bgImage from "../../../../assets/images/chair.png";
 
 const Banner = () => {
   return (
-    <div>
-      <div className="hero  bg-base-200">
+    <div style={{ backgroundImage: `url(${bgImage})` }}>
+      <div className="hero bg-base-100 opacity-95 ">
         <div className="hero-content flex-col lg:flex-row-reverse">
-          <img src={bannerImg} alt ='Banner ' className="max-w-sm rounded-lg shadow-2xl" />
+          <img
+            src={bannerImg}
+            alt="Banner "
+            className="max-w-sm rounded-lg shadow-2xl"
+          />
           <div>
             <h1 className="text-5xl font-bold">Your New Smile Starts Here</h1>
             <p className="py-6">

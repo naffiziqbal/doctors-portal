@@ -46,7 +46,7 @@ const UserContext = ({ children }) => {
     setLoading,
   };
   return (
-    <UserContext.Provider value={authinfo}>{children}</UserContext.Provider>
+    <AuthProvider.Provider value={authinfo}>{children}</AuthProvider.Provider>
   );
 };
 
