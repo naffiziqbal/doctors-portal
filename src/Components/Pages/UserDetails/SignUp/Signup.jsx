@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import  { AuthProvider } from "../../../../USerContext/UserContext";
+import { AuthProvider } from "../../../../USerContext/UserContext";
 import { useForm } from "react-hook-form";
 
 const Signup = () => {
@@ -10,14 +10,19 @@ const Signup = () => {
     register,
     formState: { errors },
   } = useForm();
-  const handleSignUp = (data)=> {
-    console.log(data)
-    
-  }
+  const handleSignUp = (data) => {
+    createUser(data.email, data.password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((err) => console.log(err));
+    console.log(data);
+  };
   return (
     <div className="flex items-center justify-center">
       <div className=" flex h-[800px] w-96 items-center justify-center flex-col shadow-lg">
-        <h3 className="text-xl text-center">Login</h3>
+        <h3 className="text-xl text-center">Sign Up</h3>
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="form-control w-full max-w-xs">
             <label className="label">
@@ -45,10 +50,10 @@ const Signup = () => {
               className="input input-bordered w-full max-w-xs"
               {...register("password")}
             />
-            <label className="label">
-              <span className="label-text">Forget password?</span>
-            </label>
           </div>
+          <p>
+            Don't have an account? <Link to="/login">Log In </Link>
+          </p>
           <input type="submit" className="btn btn-primary mt-5 w-full" />
         </form>
         <p className="text-center">Or</p>

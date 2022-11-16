@@ -1,7 +1,15 @@
-import React from "react";
+import userEvent from "@testing-library/user-event";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthProvider } from "../../../USerContext/UserContext";
 
 const Header = () => {
+  const { user, logOutUser } = useContext(AuthProvider);
+  const handleLogOut = () => {
+    logOutUser()
+      .then(() => {})
+      .catch((err) => console.log(err));
+  };
   const menuitems = {
     publicMenus: (
       <>
@@ -20,12 +28,20 @@ const Header = () => {
         <li>
           <Link to={"/contact"}>Contact Us</Link>
         </li>
-        <li>
-            <Link to='/login'>Log in</Link>
-          </li>
+        {!user?.uid ? (
+          <>
+            <li>
+              <Link to="/login">Log in</Link>
+            </li>
+            <li>
+              <Link to="/signup">Sign Up</Link>
+            </li>
+          </>
+        ) : (
           <li>
-            <Link to='/signup'>Sign Up</Link>
+            <Link onClick={handleLogOut}>Log Out</Link>
           </li>
+        )}
       </>
     ),
   };
@@ -63,12 +79,10 @@ const Header = () => {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal p-0">{menuitems.publicMenus}
-
-          </ul>
+          <ul className="menu menu-horizontal p-0">{menuitems.publicMenus}</ul>
         </div>
         <div className="navbar-end">
-          <Link className="btn">Get started</Link>
+          <Link to={'/dashboard'} className="btn">Dashboard</Link>
         </div>
       </div>
     </div>

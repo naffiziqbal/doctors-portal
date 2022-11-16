@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithRedirect,
+  signOut,
 } from "firebase/auth";
 import app from "../Firebase.init";
 
@@ -16,23 +17,30 @@ const provider = new GoogleAuthProvider();
 
 const UserContext = ({ children }) => {
   const [user, setUser] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const createUser = (email, password) => {
+    setLoading(true)
     return createUserWithEmailAndPassword(auth, email, password);
   };
   const loginWithGoogle = () => {
+    setLoading(true)
     return signInWithRedirect(auth, provider);
   };
 
   const loginUser = (email, password) => {
+    setLoading(true)
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  const logOutUser = ()=> {
+    setLoading(true)
+    return signOut(auth)
+  }
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(true);
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -44,6 +52,7 @@ const UserContext = ({ children }) => {
     createUser,
     loading,
     setLoading,
+    logOutUser
   };
   return (
     <AuthProvider.Provider value={authinfo}>{children}</AuthProvider.Provider>

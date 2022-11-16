@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthProvider } from "../../../../USerContext/UserContext";
 import { useForm } from "react-hook-form";
 
@@ -10,11 +10,16 @@ const Login = () => {
     register,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate()
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/'
 
   const handleLogIn = (data) => {
-    loginUser()
+    loginUser(data.email, data.password)
       .then((result) => {
         const user = result.user;
+        navigate(from, {replace : true})
+
       })
       .catch((err) => console.log(err));
     console.log(data);
@@ -54,6 +59,7 @@ const Login = () => {
               <span className="label-text">Forget password?</span>
             </label>
           </div>
+          <p>Don't have an account? <Link to='/signup'>Sign Up </Link></p>
           <input type="submit" className="btn btn-primary mt-5 w-full" />
         </form>
         <p className="text-center">Or</p>
