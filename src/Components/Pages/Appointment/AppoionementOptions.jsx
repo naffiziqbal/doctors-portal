@@ -1,16 +1,19 @@
 import React from "react";
 
-const AppoionementOptions = ({ option }) => {
-    const { name, slots} = option
-    console.log(slots);
+const AppoionementOptions = ({ option,setTreatment }) => {
+  const { name, slots,_id } = option;
+  console.log(option);
+  
 
 
   return (
-    <div className="shadow-lg text-center">
+    <div className="shadow-lg text-center pb-5">
       <p className="text-2xl">{name}</p>
-      <p>{slots.length > 0 ? slots[0] : 'Try Another Day'}</p>
-      <p>{slots.length > 1 ? 'Spaces Available' : "Space Available "}</p>
-      <button className="btn btn-primary">Book Appointment</button>
+      <p>{slots.length > 0 ? slots[0] : "Try Another Day"}</p>
+      <p>{slots.length > 1 ? "Spaces Available" : "Space Available "}</p>
+      <label htmlFor="booking_modal" className="btn btn-primary text-zinc-100" onClick={()=> setTreatment(option)}>
+        Book Appointment
+      </label>
     </div>
   );
 };
