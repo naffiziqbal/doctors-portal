@@ -23,7 +23,6 @@ const Header = () => {
       </>
     ),
   };
-  console.log(menuitems.publicMenus);
 
   return (
     <div>
