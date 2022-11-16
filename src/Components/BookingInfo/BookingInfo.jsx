@@ -1,7 +1,9 @@
+import { format } from "date-fns";
 import React from "react";
-
-const BookingInfo = ({ treatment }) => {
+import "./Appointment.css";
+const BookingInfo = ({ treatment, selectedDay }) => {
   const { name, id, slots } = treatment;
+  const date = format(selectedDay, "PP");
   return (
     <div>
       {/* Put this part before </body> tag */}
@@ -9,15 +11,28 @@ const BookingInfo = ({ treatment }) => {
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{name}</h3>
-          <p className="py-4">
-            You've been selected for a chance to get one year of subscription to
-            use Wikipedia for free!
-          </p>
-          <div className="modal-action">
-            <label htmlFor="booking_modal" className="btn">
-              Close!
-            </label>
-          </div>
+          <form className="booking_form">
+            <input
+              type="text"
+              value={date}
+              disabled
+              placeholder="Type here"
+              className="input input-bordered w-full max-w-xs"
+            />
+            <select className="select select-bordered w-full max-w-xs">
+              <option disabled selected>
+                Who shot first?
+              </option>
+              {
+                slots.map(slot => <option value={slot}>{slot}</option>)
+              }
+            </select>
+            <div className=" modal-action text-center">
+              <label htmlFor="booking_modal" className="btn " type="submit">
+                Submit
+              </label>
+            </div>
+          </form>
         </div>
       </div>
     </div>

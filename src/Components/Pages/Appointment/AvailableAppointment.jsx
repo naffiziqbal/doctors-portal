@@ -28,6 +28,7 @@ const AvailableAppointment = ({ selectedDay, letSelectedDay }) => {
       </div>
       <BookingInfo
       treatment={treatment}
+      selectedDay={selectedDay}
       />
     </>
   );
