@@ -1,75 +1,65 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthProvider } from "../../../../USerContext/UserContext";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
   const { loginUser } = useContext(AuthProvider);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    loginUser(email, password)
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  const handleLogIn = (data) => {
+    loginUser()
       .then((result) => {
         const user = result.user;
-        console.log(user);
       })
       .catch((err) => console.log(err));
+    console.log(data);
   };
+  // const onSubmit = values => console.log(values);
+
   return (
-    <div>
-      <div className="hero min-h-screen bg-base-200">
-        <div className="hero-content flex-col lg:flex-row-reverse">
-          <div className="text-center lg:text-left"></div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-            <form className="card-body" onSubmit={handleSubmit}>
-              <h3 className="text-xl text-center">Login</h3>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="email"
-                  className="input input-bordered"
-                />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Password</span>
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="password"
-                  className="input input-bordered"
-                />
-                <label className="label">
-                  <a href="#" className="label-text-alt link link-hover">
-                    Forgot password?
-                  </a>
-                </label>
-              </div>
-              <div className="form-control mt-6">
-                <button className="btn btn-primary" type="submit">
-                  Login
-                </button>
-              </div>
-              <p>
-                New To Doctors Portal ?{" "}
-                <Link to={"/signup"} className="text-blue-500">
-                  {" "}
-                  Create new account
-                </Link>
-              </p>
-            </form>
-            <p className="text-center">Or</p>
-            <hr />
-            <div className="text-center p-3 form-control">
-              <button className="btn btn-primary">Continue With Google</button>
-            </div>
+    <div className="flex items-center justify-center">
+      <div className=" flex h-[800px] w-96 items-center justify-center flex-col shadow-lg">
+        <h3 className="text-xl text-center">Login</h3>
+        <form onSubmit={handleSubmit(handleLogIn)}>
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              className="input input-bordered w-full max-w-xs"
+              {...register("email", {
+                required: "Email is Required",
+              })}
+            />
+            
+            <p className="text-red-600">{errors.email && errors.email.message}</p>
           </div>
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">Password</span>
+            </label>
+
+            <input
+              type="password"
+              className="input input-bordered w-full max-w-xs"
+              {...register("password")}
+            />
+            <label className="label">
+              <span className="label-text">Forget password?</span>
+            </label>
+          </div>
+          <input type="submit" className="btn btn-primary mt-5 w-full" />
+        </form>
+        <p className="text-center">Or</p>
+        <hr />
+        <div className="text-center p-3 form-control">
+          <button className="btn btn-primary">Continue With Google</button>
         </div>
       </div>
     </div>

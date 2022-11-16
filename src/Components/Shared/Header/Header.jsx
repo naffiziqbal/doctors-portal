@@ -20,6 +20,12 @@ const Header = () => {
         <li>
           <Link to={"/contact"}>Contact Us</Link>
         </li>
+        <li>
+            <Link to='/login'>Log in</Link>
+          </li>
+          <li>
+            <Link to='/signup'>Sign Up</Link>
+          </li>
       </>
     ),
   };
@@ -57,7 +63,9 @@ const Header = () => {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal p-0">{menuitems.publicMenus}</ul>
+          <ul className="menu menu-horizontal p-0">{menuitems.publicMenus}
+
+          </ul>
         </div>
         <div className="navbar-end">
           <Link className="btn">Get started</Link>
