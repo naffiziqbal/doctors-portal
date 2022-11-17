@@ -6,6 +6,7 @@ const BookingInfo = ({ treatment, selectedDay }) => {
   const { user } = useContext(AuthProvider);
   const { name, id, slots } = treatment;
   const date = format(selectedDay, "PP");
+
   const handleModlaData = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -37,12 +38,17 @@ const BookingInfo = ({ treatment, selectedDay }) => {
               placeholder="Type here"
               className="input input-bordered w-full max-w-xs"
             />
-            <select name="slot" className="select select-bordered w-full max-w-xs">
+            <select
+              name="slot"
+              className="select select-bordered w-full max-w-xs"
+            >
               <option disabled selected>
                 Who shot first?
               </option>
               {slots?.map((slot) => (
-                <option  name="slot" value={slot}>{slot}</option>
+                <option name="slot" value={slot}>
+                  {slot}
+                </option>
               ))}
             </select>
             <input
@@ -64,7 +70,15 @@ const BookingInfo = ({ treatment, selectedDay }) => {
               className="input input-bordered w-full max-w-xs"
             />
             <br />
-            <input htmlFor="booking_modal" className="btn max-w-xs" type="submit" value='submit'/>
+            <div className="modal-action">
+              <label
+                htmlFor="booking_modal"
+                className="btn w-full
+              "
+              >
+                <input type="submit" />
+              </label>
+            </div>
           </form>
         </div>
       </div>
