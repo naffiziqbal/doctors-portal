@@ -2,7 +2,6 @@ import React from 'react';
 
 const Service = ({service}) => {
     const { id, title,description, img} = service
-    console.log(service);
     
     return (
         <div className='flex flex-col justify-center items-center line leading-10 shadow-lg rounded-lg'>

@@ -2,7 +2,6 @@ import React from "react";
 
 const AppoionementOptions = ({ option, setTreatment }) => {
   const { name, slots, _id } = option;
-  console.log(option);
 
   return (
     <div className="shadow-lg text-center pb-5">

@@ -3,7 +3,7 @@ import careImg from "../../../../assets/images/treatment.png";
 
 const CareSection = () => {
   return (
-    <div className="hero bg-base-100  flex justify-evenly  p-16 ">
+    <div className="hero bg-base-100  flex justify-evenly ">
       <div className="hero-content flex  flex-col gap-24 lg:flex-row">
         <img
           src={careImg}

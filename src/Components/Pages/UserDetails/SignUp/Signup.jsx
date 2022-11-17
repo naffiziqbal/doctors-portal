@@ -14,10 +14,8 @@ const Signup = () => {
     createUser(data.email, data.password)
       .then((result) => {
         const user = result.user;
-        console.log(user);
       })
       .catch((err) => console.log(err));
-    console.log(data);
   };
   return (
     <div className="flex items-center justify-center">

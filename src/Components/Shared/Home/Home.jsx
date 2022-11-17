@@ -7,7 +7,7 @@ import Services from './Services/Services';
 
 const Home = () => {
     return (
-        <div className='mx-5'>
+        <div className='mx-15'>
             <Banner/>
             <InfoSecton/>
             <Services/>

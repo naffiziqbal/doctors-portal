@@ -22,7 +22,6 @@ const Login = () => {
 
       })
       .catch((err) => console.log(err));
-    console.log(data);
   };
   // const onSubmit = values => console.log(values);
 
