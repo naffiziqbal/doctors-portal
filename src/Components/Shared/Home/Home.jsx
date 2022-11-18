@@ -1,5 +1,5 @@
 import React from 'react';
-import Appointment from './Appointment/Appointment';
+import Appointment from './HomeSectionAppointment/Appointment';
 import Banner from './Banner/Banner';
 import CareSection from './CareSection/CareSection';
 import InfoSecton from './InfoSection/InfoSecton';
