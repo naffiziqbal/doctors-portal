@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import BookingInfo from "../../BookingInfo/BookingInfo";
+import Loading from "../../Loading";
 import AppoionementOptions from "./AppoionementOptions";
 
 const AvailableAppointment = ({ selectedDay, letSelectedDay }) => {
@@ -10,7 +11,7 @@ const AvailableAppointment = ({ selectedDay, letSelectedDay }) => {
 
   const [treatment, setTreatment] = useState({});
 
-  const { data: appointmentOpt = [], refetch } = useQuery({
+  const { data: appointmentOpt = [], refetch, isLoading } = useQuery({
     queryKey: ["appointmentOpt", date],
     queryFn: () =>
       fetch(`http://localhost:5000/appointmentOptions?date=${date}`).then(
@@ -21,6 +22,9 @@ const AvailableAppointment = ({ selectedDay, letSelectedDay }) => {
   //     .then((res) => res.json())
   //     .then((data) => setAppointmentOpt(data));
   // }, []);
+  if(isLoading){
+    return <Loading></Loading>
+  }
   return (
     <>
       <div>

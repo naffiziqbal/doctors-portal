@@ -38,6 +38,10 @@ const BookingInfo = ({ treatment, selectedDay, refetch }) => {
       .then((data) => {
         if(data.acknowledged){
           refetch() //Set Data  Automatically 
+
+        }
+        else{
+          alert(data.message)
         }
       });
   };
