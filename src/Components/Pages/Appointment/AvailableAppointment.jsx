@@ -6,12 +6,16 @@ import AppoionementOptions from "./AppoionementOptions";
 
 const AvailableAppointment = ({ selectedDay, letSelectedDay }) => {
   // const [appointmentOpt, setAppointmentOpt] = useState([]);
+  const date = format(selectedDay, "PP");
+
   const [treatment, setTreatment] = useState({});
 
-  const {data:appointmentOpt = [], isLoading} = useQuery({
-    queryKey: ["appointmentOpt"],
-    queryFn: () => fetch(`http://localhost:5000/appointmentOptions`)
-    .then(res => res.json())
+  const { data: appointmentOpt = [], refetch } = useQuery({
+    queryKey: ["appointmentOpt", date],
+    queryFn: () =>
+      fetch(`http://localhost:5000/appointmentOptions?date=${date}`).then(
+        (res) => res.json()
+      ),
   });
   // useEffect(() => {
   //     .then((res) => res.json())
@@ -34,7 +38,11 @@ const AvailableAppointment = ({ selectedDay, letSelectedDay }) => {
           />
         ))}
       </div>
-      <BookingInfo treatment={treatment} selectedDay={selectedDay} />
+      <BookingInfo
+        treatment={treatment}
+        selectedDay={selectedDay}
+        refetch={refetch}
+      />
     </>
   );
 };

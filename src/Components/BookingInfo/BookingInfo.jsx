@@ -2,9 +2,10 @@ import { format } from "date-fns";
 import React, { useContext } from "react";
 import { AuthProvider } from "../../USerContext/UserContext";
 import "./Appointment.css";
-const BookingInfo = ({ treatment, selectedDay }) => {
+const BookingInfo = ({ treatment, selectedDay, refetch }) => {
   const { user } = useContext(AuthProvider);
   const { name, id, slots } = treatment;
+
   const date = format(selectedDay, "PP");
 
   const handleModlaData = (e) => {
@@ -17,11 +18,28 @@ const BookingInfo = ({ treatment, selectedDay }) => {
 
     const bookingInfo = {
       name,
+      treatment: treatment?.name,
+      appointmentDate: date,
       email,
       slot,
       phone,
     };
+
     console.log(bookingInfo);
+
+    fetch(`http://localhost:5000/bookings`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(bookingInfo),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if(data.acknowledged){
+          refetch() //Set Data  Automatically 
+        }
+      });
   };
   return (
     <div>
@@ -46,9 +64,7 @@ const BookingInfo = ({ treatment, selectedDay }) => {
                 Who shot first?
               </option>
               {slots?.map((slot) => (
-                <option name="slot" value={slot}>
-                  {slot}
-                </option>
+                <option value={slot}>{slot}</option>
               ))}
             </select>
             <input
