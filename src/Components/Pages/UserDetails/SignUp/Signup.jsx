@@ -1,27 +1,92 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthProvider } from "../../../../USerContext/UserContext";
 import { useForm } from "react-hook-form";
 
 const Signup = () => {
-  const { createUser } = useContext(AuthProvider);
+  const { createUser, updateUserInfo } = useContext(AuthProvider);
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
+
   const handleSignUp = (data) => {
-    createUser(data.email, data.password)
+    console.log(data);
+
+    createUser(data.email, data.password, data.photoURL)
       .then((result) => {
         const user = result.user;
+        handleUserInfo({
+          displayName: data.name,
+          email: data.email,
+          photoURL: data.photoURL,
+        });
+        //Show Photo URL 
+        console.log(user);
+      })
+      .catch((err) => console.log(err));
+    saveUserToDB(data.email, data.name, data.photoURL);
+  };
+  const handleUserInfo = (displayName, photoURL) => {
+    updateUserInfo(displayName, photoURL);
+  };
+  const saveUserToDB = (email, displayName, photoURL) => {
+    const user = { email, displayName, photoURL };
+    fetch(`http://localhost:5000/users`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        getToken(email)
+        if (data.acknowledged) {
+        }
       })
       .catch((err) => console.log(err));
   };
+  const getToken =(email) =>{
+    fetch(`http://localhost:5000/jwt?email=${email}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      
+      if(data.accessToken){
+        localStorage.setItem('accessToken', data.accessToken)
+        navigate("/");
+      }
+    })
+  }
   return (
     <div className="flex items-center justify-center">
       <div className=" flex h-[800px] w-96 items-center justify-center flex-col shadow-lg">
         <h3 className="text-xl text-center">Sign Up</h3>
         <form onSubmit={handleSubmit(handleSignUp)}>
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">Name</span>
+            </label>
+            <input
+              type="name"
+              className="input input-bordered w-full max-w-xs"
+              {...register("name")}
+            />
+          </div>
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">Profile Url</span>
+            </label>
+            <input
+              type="url"
+              className="input input-bordered w-full max-w-xs"
+              {...register("photoURL")}
+            />
+          </div>
           <div className="form-control w-full max-w-xs">
             <label className="label">
               <span className="label-text">Email</span>

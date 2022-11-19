@@ -107,6 +107,7 @@ const Header = () => {
               </svg>
             </label>
             <p>{user?.email}</p>
+            <img src={user?.photoURL} alt =' '/>
           </div>
         )}
       </div>
