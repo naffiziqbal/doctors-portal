@@ -18,13 +18,25 @@ const Login = () => {
     loginUser(data.email, data.password)
       .then((result) => {
         const user = result.user;
+        getToken(data.email)
         navigate(from, {replace : true})
 
       })
       .catch((err) => console.log(err));
   };
   // const onSubmit = values => console.log(values);
-
+  const getToken =(email) =>{
+    fetch(`http://localhost:5000/jwt?email=${email}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      
+      if(data.accessToken){
+        localStorage.setItem('accessToken', data.accessToken)
+        navigate("/");
+      }
+    })
+  }
   return (
     <div className="flex items-center justify-center">
       <div className=" flex h-[800px] w-96 items-center justify-center flex-col shadow-lg">

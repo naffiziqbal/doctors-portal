@@ -4,7 +4,8 @@ import { AuthProvider } from "../../../../USerContext/UserContext";
 import { useForm } from "react-hook-form";
 
 const Signup = () => {
-  const { createUser, updateUserInfo } = useContext(AuthProvider);
+  const { createUser, updateUserInfo, loginWithGoogle } =
+    useContext(AuthProvider);
   const {
     handleSubmit,
     register,
@@ -23,7 +24,7 @@ const Signup = () => {
           email: data.email,
           photoURL: data.photoURL,
         });
-        //Show Photo URL 
+        //Show Photo URL
         console.log(user);
       })
       .catch((err) => console.log(err));
@@ -44,24 +45,34 @@ const Signup = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        getToken(email)
+        getToken(email);
         if (data.acknowledged) {
         }
       })
       .catch((err) => console.log(err));
   };
-  const getToken =(email) =>{
+  const getToken = (email) => {
     fetch(`http://localhost:5000/jwt?email=${email}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      
-      if(data.accessToken){
-        localStorage.setItem('accessToken', data.accessToken)
-        navigate("/");
-      }
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+
+        if (data.accessToken) {
+          localStorage.setItem("accessToken", data.accessToken);
+          navigate("/");
+        }
+      });
+  };
+  const handleGoogleLogIn = () => {
+    loginWithGoogle()
+    .then((result) => {
+      const user = result.user;
+      console.log(user)
+      getToken(user.email)
+      navigate('/')
     })
-  }
+    .catch(err=> console.log(err))
+  };
   return (
     <div className="flex items-center justify-center">
       <div className=" flex h-[800px] w-96 items-center justify-center flex-col shadow-lg">
@@ -122,7 +133,9 @@ const Signup = () => {
         <p className="text-center">Or</p>
         <hr />
         <div className="text-center p-3 form-control">
-          <button className="btn btn-primary">Continue With Google</button>
+          <button className="btn btn-primary" onClick={handleGoogleLogIn}>
+            Continue With Google
+          </button>
         </div>
       </div>
     </div>
