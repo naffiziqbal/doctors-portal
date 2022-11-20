@@ -6,7 +6,6 @@ import { AuthProvider } from "../USerContext/UserContext";
 
 const DashBoardLayout = () => {
   const { user } = useContext(AuthProvider);
-  console.log(user.email);
   const [isAdmin] = useAdmin(user.email)
 
   // const [isAdmin] = useAdmin(user?.email);
@@ -31,6 +30,9 @@ const DashBoardLayout = () => {
               <>
                 <li>
                   <Link to={"allusers/"}>All Users</Link>
+                </li>
+                <li>
+                  <Link to = '/dashboard/adddoctors'>Add Doctors</Link>
                 </li>
               </>
             )}

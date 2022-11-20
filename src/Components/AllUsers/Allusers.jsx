@@ -22,7 +22,6 @@ const Allusers = () => {
             alert(' Successful')
             refetch()
         }
-        console.log(data);
       });
   };
   return (

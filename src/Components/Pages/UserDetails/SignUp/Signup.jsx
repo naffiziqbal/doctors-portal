@@ -14,7 +14,6 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleSignUp = (data) => {
-    console.log(data);
 
     createUser(data.email, data.password, data.photoURL)
       .then((result) => {
@@ -25,7 +24,6 @@ const Signup = () => {
           photoURL: data.photoURL,
         });
         //Show Photo URL
-        console.log(user);
       })
       .catch((err) => console.log(err));
     saveUserToDB(data.email, data.name, data.photoURL);
@@ -44,7 +42,6 @@ const Signup = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         getToken(email);
         if (data.acknowledged) {
         }
@@ -55,7 +52,6 @@ const Signup = () => {
     fetch(`http://localhost:5000/jwt?email=${email}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
 
         if (data.accessToken) {
           localStorage.setItem("accessToken", data.accessToken);
@@ -67,7 +63,6 @@ const Signup = () => {
     loginWithGoogle()
     .then((result) => {
       const user = result.user;
-      console.log(user)
       getToken(user.email)
       navigate('/')
     })
