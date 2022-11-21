@@ -1,9 +1,16 @@
+import { useQuery } from "@tanstack/react-query";
 import userEvent from "@testing-library/user-event";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthProvider } from "../../../USerContext/UserContext";
 
 const Header = () => {
+  // const { data: users = [] } = useQuery({
+  //   queryKey: ["users"],
+  //   queryFn: () =>
+  //     fetch(`http://localhost:5000/users`).then((res) => res.json())
+  // });
+  // console.log(users);
   const { user, logOutUser } = useContext(AuthProvider);
   const handleLogOut = () => {
     logOutUser()
@@ -106,8 +113,8 @@ const Header = () => {
                 />
               </svg>
             </label>
-            <p>{user?.email}</p>
-            <img src={user?.photoURL} alt =' '/>
+            <p className="font-bold mr-4">{user?.displayName}</p>
+            <img className="w-12 h-12 rounded-full" src={user?.photoURL} alt=" " />
           </div>
         )}
       </div>

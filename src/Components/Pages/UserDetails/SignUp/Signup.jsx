@@ -14,22 +14,24 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleSignUp = (data) => {
-
     createUser(data.email, data.password, data.photoURL)
       .then((result) => {
         const user = result.user;
-        handleUserInfo({
-          displayName: data.name,
-          email: data.email,
-          photoURL: data.photoURL,
-        });
+        handleUserInfo(data.name, data.photoURL);
+        console.log(user);
         //Show Photo URL
       })
       .catch((err) => console.log(err));
     saveUserToDB(data.email, data.name, data.photoURL);
   };
-  const handleUserInfo = (displayName, photoURL) => {
-    updateUserInfo(displayName, photoURL);
+  const handleUserInfo = (name, photoURL) => {
+    const profile = {
+      displayName: name,
+      photoURL,
+    };
+    updateUserInfo(profile)
+      .then(() => {})
+      .catch((err) => console.log(err));
   };
   const saveUserToDB = (email, displayName, photoURL) => {
     const user = { email, displayName, photoURL };
@@ -52,7 +54,6 @@ const Signup = () => {
     fetch(`http://localhost:5000/jwt?email=${email}`)
       .then((res) => res.json())
       .then((data) => {
-
         if (data.accessToken) {
           localStorage.setItem("accessToken", data.accessToken);
           navigate("/");
@@ -61,12 +62,12 @@ const Signup = () => {
   };
   const handleGoogleLogIn = () => {
     loginWithGoogle()
-    .then((result) => {
-      const user = result.user;
-      getToken(user.email)
-      navigate('/')
-    })
-    .catch(err=> console.log(err))
+      .then((result) => {
+        const user = result.user;
+        getToken(user.email);
+        navigate("/");
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div className="flex items-center justify-center">

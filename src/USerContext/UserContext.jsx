@@ -38,8 +38,8 @@ const UserContext = ({ children }) => {
     setLoading(true)
     return signOut(auth)
   }
-  const updateUserInfo =(displayName, address)=>{
-    return updateProfile(auth.currentUser,{displayName, address,})
+  const updateUserInfo =(profile)=>{
+    return updateProfile(auth.currentUser,profile)
   }
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
