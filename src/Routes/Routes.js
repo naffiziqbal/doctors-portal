@@ -4,6 +4,7 @@ import Allusers from '../Components/AllUsers/Allusers';
 import Dashboard from '../Components/Dashboard/Dashboard';
 import MyAppointment from '../Components/Dashboard/MyAppointment';
 import AddDoctors from '../Components/Doctors/AddDoctors';
+import ManageDoctors from '../Components/Doctors/ManageDoctors';
 import Appointment from '../Components/Pages/Appointment/Appointment';
 import Errors from '../Components/Pages/Error/Errors';
 import Login from '../Components/Pages/UserDetails/Login/Login';
@@ -59,7 +60,11 @@ export const router = createBrowserRouter([
             {
                 path: '/dashboard/adddoctors',
                 element: <AdminRoutes><AddDoctors/></AdminRoutes>
-            }
+            },
+            {
+                path: '/dashboard/managedoctors',
+                element: <AdminRoutes><ManageDoctors/></AdminRoutes>
+            },
         ]
     },
 ])

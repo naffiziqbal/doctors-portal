@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "../Loading";
 
 const AddDoctors = () => {
+  const navigate = useNavigate()
   const {
     handleSubmit,
     register,
@@ -21,7 +22,6 @@ const AddDoctors = () => {
   });
   const imgHostKey = process.env.REACT_APP_IMGBB_API_KEY;
 
-
   const handleDoctor = (data) => {
     const image = data.image[0];
     const formData = new FormData();
@@ -34,10 +34,34 @@ const AddDoctors = () => {
     })
       .then((res) => res.json())
       .then((imgData) => {
-        console.log(imgData);
+        if (imgData.success) {
+          console.log();
+          const doctor = {
+            name: data.name,
+            email: data.email,
+            speciality: data.speciality,
+            img: imgData.data.url,
+          };
+          // console.log(doctor);
+
+          fetch(`http://localhost:5000/doctors`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              authorization: `bearer ${localStorage.getItem("accessToken")}`,
+            },
+            body: JSON.stringify(doctor),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.acknowledged) {
+                alert("Doctor Added");
+                navigate('/dashboard/managedoctors')
+              }
+              console.log(data);
+            });
+        }
       });
-      console.log(data);
-      
   };
   if (isLoading) {
     return <Loading />;
@@ -82,9 +106,7 @@ const AddDoctors = () => {
                 {...register("speciality")}
                 className="select select-bordered w-full max-w-xs"
               >
-                <option disabled>
-                  Pick A Speciality ?
-                </option>
+                <option disabled>Pick A Speciality ?</option>
                 {appointmentData.map((speciality) => (
                   <option key={speciality._id}>{speciality.name}</option>
                 ))}
@@ -100,10 +122,14 @@ const AddDoctors = () => {
                 {...register("image")}
               />
             </div>
-            <input
-              type="submit"
-              className="btn btn-primary mt-5 w-full text-white"
-            />
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <input
+                type="submit"
+                className="btn btn-primary mt-5 w-full text-white"
+              />
+            )}
           </form>
         </div>
       </div>
