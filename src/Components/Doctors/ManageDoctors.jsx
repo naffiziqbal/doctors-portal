@@ -5,10 +5,12 @@ import ConfirmationModal from "../Shared/ConfiramationModal/ConfirmationModal";
 
 const ManageDoctors = () => {
   const [deleteDoc, setDeleteDoc] = useState(null);
-  const closeModal = () => {
-    setDeleteDoc(null);
-  };
-  const { data: doctors = [], isLoading } = useQuery({
+
+  const {
+    data: doctors = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["doctors"],
     queryFn: () =>
       fetch(`http://localhost:5000/doctors`, {
@@ -17,7 +19,26 @@ const ManageDoctors = () => {
         },
       }).then((res) => res.json()),
   });
-  console.log(doctors.img);
+  const closeModal = () => {
+    setDeleteDoc(null);
+  };
+  const successAction = (doctor) => {
+    fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount > 1) {
+          refetch();
+          alert(" Deleted Succesfully");
+        }
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  };
   if (isLoading) {
     return <Loading />;
   }
@@ -77,9 +98,11 @@ const ManageDoctors = () => {
       </div>
       {deleteDoc && (
         <ConfirmationModal
-          title={`Are You Sure You Want To Delete`}
+          title={`Are You Sure You Want To ${deleteDoc.name}`}
           message={` Once You've Deleted the Doctor There is no way reatur`}
-          closeModal = {closeModal}
+          closeModal={closeModal}
+          successAction={successAction}
+          modalData={deleteDoc}
         />
       )}
     </div>

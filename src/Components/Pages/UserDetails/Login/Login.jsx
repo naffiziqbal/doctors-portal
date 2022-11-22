@@ -10,32 +10,30 @@ const Login = () => {
     register,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/'
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogIn = (data) => {
     loginUser(data.email, data.password)
       .then((result) => {
         const user = result.user;
-        getToken(data.email)
-        navigate(from, {replace : true})
-
+        getToken(data.email);
+        navigate(from, { replace: true });
       })
       .catch((err) => console.log(err));
   };
   // const onSubmit = values => console.log(values);
-  const getToken =(email) =>{
+  const getToken = (email) => {
     fetch(`http://localhost:5000/jwt?email=${email}`)
-    .then(res => res.json())
-    .then(data => {
-      
-      if(data.accessToken){
-        localStorage.setItem('accessToken', data.accessToken)
-        navigate("/");
-      }
-    })
-  }
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.accessToken) {
+          localStorage.setItem("accessToken", data.accessToken);
+          navigate(from, { replace: true });
+        }
+      });
+  };
   return (
     <div className="flex items-center justify-center">
       <div className=" flex h-[800px] w-96 items-center justify-center flex-col shadow-lg">
@@ -52,8 +50,10 @@ const Login = () => {
                 required: "Email is Required",
               })}
             />
-            
-            <p className="text-red-600">{errors.email && errors.email.message}</p>
+
+            <p className="text-red-600">
+              {errors.email && errors.email.message}
+            </p>
           </div>
           <div className="form-control w-full max-w-xs">
             <label className="label">
@@ -69,7 +69,9 @@ const Login = () => {
               <span className="label-text">Forget password?</span>
             </label>
           </div>
-          <p>Don't have an account? <Link to='/signup'>Sign Up </Link></p>
+          <p>
+            Don't have an account? <Link to="/signup">Sign Up </Link>
+          </p>
           <input type="submit" className="btn btn-primary mt-5 w-full" />
         </form>
         <p className="text-center">Or</p>

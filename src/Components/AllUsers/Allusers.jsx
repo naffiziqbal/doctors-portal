@@ -1,9 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
+import useAdmin from "../../hooks/useAdmin";
+import { AuthProvider } from "../../USerContext/UserContext";
 import ConfirmationModal from "../Shared/ConfiramationModal/ConfirmationModal";
 
 const Allusers = () => {
+  const { user } = useContext(AuthProvider);
   const [deleteUser, setDeleteUser] = useState(null);
+  const [isAdmin, isAdminLoader] = useAdmin(user?.email);
 
   const closeModal = () => {
     setDeleteUser(null);
@@ -28,6 +32,23 @@ const Allusers = () => {
         }
       });
   };
+  const successAction = (user) => {
+    fetch(`http://localhost:5000/allusers/${user._id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount > 1) {
+          refetch();
+          alert(" Deleted Succesfully");
+        }
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div>
       <div className="overflow-x-auto w-full">
@@ -49,13 +70,9 @@ const Allusers = () => {
           </thead>
           <tbody>
             {/* <!-- row 1 --> */}
-            {users.map((user) => (
+            {users.map((user, idx) => (
               <tr key={user._id}>
-                <th>
-                  <label>
-                    <input type="checkbox" className="checkbox" />
-                  </label>
-                </th>
+                <th>{idx + 1}</th>
                 <td>
                   <div className="flex items-center space-x-3">
                     <div className="avatar">
@@ -67,7 +84,12 @@ const Allusers = () => {
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">{user.displayName}</div>
+                      <div className="font-bold">
+                        {user.displayName}
+                        {
+                          user.role === 'admin' && <p className="text-xs text-orange-400">Admin</p>
+                        }
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -85,7 +107,7 @@ const Allusers = () => {
                 </td>
                 <td>
                   <label
-                    onClick={() => setDeleteUser(users)}
+                    onClick={() => setDeleteUser(user)}
                     htmlFor="confirmation-modal"
                     className="btn btn-accent btn-xs"
                   >
@@ -103,6 +125,8 @@ const Allusers = () => {
           title={`Are You Sure You Wants To Delete This User?`}
           // message = {`${title}`}
           closeModal={closeModal}
+          successAction={successAction}
+          modalData={deleteUser}
         />
       )}
     </div>

@@ -1,20 +1,25 @@
 import React, { useContext } from "react";
 import { AuthProvider } from "../../USerContext/UserContext";
 import { useQuery } from "@tanstack/react-query";
+import { Navigate, useLocation } from "react-router-dom";
 
 // const queryClient = new QueryClient();
 
 const MyAppointment = () => {
+  const location = useLocation();
   const { user } = useContext(AuthProvider);
   const url = `http://localhost:5000/bookings?email=${user?.email}`;
   const { data: userBooking = [] } = useQuery({
-    queryKeys: ["bookings", user?.email],
-    queryFn: () => fetch(url,{
-      headers : {
-        authorization : ` bearer ${localStorage.getItem('accessToken')}`
-      }
-    }).then((res) => res.json()),
+    queryKey: ["bookings", user?.email],
+    queryFn: () =>
+      fetch(url, {
+        headers: {
+          authorization: ` bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }).then((res) => res.json()),
   });
+  console.log(user.accessToken);
+
   return (
     <div>
       <p>All Appointment Goes Down Here</p>
@@ -32,9 +37,9 @@ const MyAppointment = () => {
           </thead>
           <tbody>
             {/* <!-- row 1 --> */}
-            {userBooking?.map((book, idx) => ( 
-              <tr >
-                <th key={book._id}>{idx +1 }</th>
+            {userBooking?.map((book, idx) => (
+              <tr>
+                <th key={book._id}>{idx + 1}</th>
                 <td>{book.name}</td>
                 <td>{book.treatment}</td>
                 <td>{book.appointmentDate}</td>
