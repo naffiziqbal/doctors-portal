@@ -5,6 +5,9 @@ import ConfirmationModal from "../Shared/ConfiramationModal/ConfirmationModal";
 
 const ManageDoctors = () => {
   const [deleteDoc, setDeleteDoc] = useState(null);
+  const closeModal = () => {
+    setDeleteDoc(null);
+  };
   const { data: doctors = [], isLoading } = useQuery({
     queryKey: ["doctors"],
     queryFn: () =>
@@ -55,7 +58,8 @@ const ManageDoctors = () => {
                 </td>
                 <td> {doctor.email}</td>
                 <th>
-                  <label onClick={()=> setDeleteDoc(doctor)}
+                  <label
+                    onClick={() => setDeleteDoc(doctor)}
                     htmlFor="confirmation-modal"
                     className="btn btn-accent btn-xs"
                   >
@@ -71,12 +75,13 @@ const ManageDoctors = () => {
           {/* <!-- foot --> */}
         </table>
       </div>
-      {
-        deleteDoc && <ConfirmationModal 
-        title={`Are You Sure You Want To Delete`}
-        message = {` Once You've Deleted the Doctor There is no way reatur`}
+      {deleteDoc && (
+        <ConfirmationModal
+          title={`Are You Sure You Want To Delete`}
+          message={` Once You've Deleted the Doctor There is no way reatur`}
+          closeModal = {closeModal}
         />
-      }
+      )}
     </div>
   );
 };

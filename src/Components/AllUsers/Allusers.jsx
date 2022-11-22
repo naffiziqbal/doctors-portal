@@ -1,9 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
-
+import React, { useContext, useState } from "react";
+import ConfirmationModal from "../Shared/ConfiramationModal/ConfirmationModal";
 
 const Allusers = () => {
+  const [deleteUser, setDeleteUser] = useState(null);
 
+  const closeModal = () => {
+    setDeleteUser(null);
+  };
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: () =>
@@ -12,15 +16,15 @@ const Allusers = () => {
   const hanldeMakeAdmin = (id) => {
     fetch(` http://localhost:5000/users/admin/${id}`, {
       method: "PUT",
-      headers : {
-        authorization : `bearer ${localStorage.getItem("accessToken")}`
-      }
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.modifiedCount  > 0){
-            alert(' Successful')
-            refetch()
+        if (data.modifiedCount > 0) {
+          alert(" Successful");
+          refetch();
         }
       });
   };
@@ -46,7 +50,7 @@ const Allusers = () => {
           <tbody>
             {/* <!-- row 1 --> */}
             {users.map((user) => (
-              <tr key={users._id}>
+              <tr key={user._id}>
                 <th>
                   <label>
                     <input type="checkbox" className="checkbox" />
@@ -72,7 +76,7 @@ const Allusers = () => {
                 <td>
                   {user?.role !== "admin" && (
                     <button
-                      className="btn btn-primary"
+                      className="btn btn-primary btn-xs"
                       onClick={() => hanldeMakeAdmin(user._id)}
                     >
                       Admin
@@ -80,7 +84,13 @@ const Allusers = () => {
                   )}
                 </td>
                 <td>
-                  <button className="btn btn-danger">Delete</button>
+                  <label
+                    onClick={() => setDeleteUser(users)}
+                    htmlFor="confirmation-modal"
+                    className="btn btn-accent btn-xs"
+                  >
+                    Delete
+                  </label>
                   <br />
                 </td>
               </tr>
@@ -88,6 +98,13 @@ const Allusers = () => {
           </tbody>
         </table>
       </div>
+      {deleteUser && (
+        <ConfirmationModal
+          title={`Are You Sure You Wants To Delete This User?`}
+          // message = {`${title}`}
+          closeModal={closeModal}
+        />
+      )}
     </div>
   );
 };

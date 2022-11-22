@@ -1,6 +1,6 @@
 import React from "react";
 
-const ConfirmationModal = ({ title, message }) => {
+const ConfirmationModal = ({ title, message, closeModal }) => {
   return (
     <div>
       {/* The button to open modal */}
@@ -11,8 +11,9 @@ const ConfirmationModal = ({ title, message }) => {
           <h3 className="font-bold text-lg">{title}</h3>
           <p className="py-4">{message}</p>
           <div className="modal-action">
-            <label htmlFor="confirmation-modal" className="btn">
-              Yay!
+            <button className="btn btn-accent" onClick={closeModal}>Close Modal</button>
+            <label htmlFor="confirmation-modal" className="btn bg-red-400 border-none">
+            Delete
             </label>
           </div>
         </div>
