@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
 import useAdmin from "../../hooks/useAdmin";
+import useTitle from "../../hooks/useTitle";
 import { AuthProvider } from "../../USerContext/UserContext";
 import ConfirmationModal from "../Shared/ConfiramationModal/ConfirmationModal";
 
 const Allusers = () => {
+  useTitle('All Users')
   const { user } = useContext(AuthProvider);
   const [deleteUser, setDeleteUser] = useState(null);
   const [isAdmin, isAdminLoader] = useAdmin(user?.email);

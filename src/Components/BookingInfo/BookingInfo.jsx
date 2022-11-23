@@ -4,7 +4,7 @@ import { AuthProvider } from "../../USerContext/UserContext";
 import "./Appointment.css";
 const BookingInfo = ({ treatment, selectedDay, refetch }) => {
   const { user } = useContext(AuthProvider);
-  const { name, id, slots } = treatment;
+  const { name, id, slots,price } = treatment;
 
   const date = format(selectedDay, "PP");
 
@@ -15,7 +15,6 @@ const BookingInfo = ({ treatment, selectedDay, refetch }) => {
     const email = form.email.value;
     const slot = form.slot.value;
     const phone = form.phone.value;
-
     const bookingInfo = {
       name,
       treatment: treatment?.name,
@@ -23,8 +22,8 @@ const BookingInfo = ({ treatment, selectedDay, refetch }) => {
       email,
       slot,
       phone,
+      price : treatment.price
     };
-
 
     fetch(`http://localhost:5000/bookings`, {
       method: "POST",
@@ -35,12 +34,11 @@ const BookingInfo = ({ treatment, selectedDay, refetch }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.acknowledged){
-          refetch() //Set Data  Automatically 
-
-        }
-        else{
-          alert(data.message)
+        if (data.acknowledged) {
+          alert('Data Submitted')
+          refetch(); //Set Data  Automatically
+        } else {
+          alert(data.message);
         }
       });
   };

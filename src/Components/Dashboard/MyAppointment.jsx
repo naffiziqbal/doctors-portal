@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
 import { AuthProvider } from "../../USerContext/UserContext";
 import { useQuery } from "@tanstack/react-query";
-import { Navigate, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
+import useTitle from "../../hooks/useTitle";
 
 // const queryClient = new QueryClient();
 
 const MyAppointment = () => {
+  useTitle("My Appointment");
   const location = useLocation();
   const { user } = useContext(AuthProvider);
   const url = `http://localhost:5000/bookings?email=${user?.email}`;
@@ -18,7 +20,7 @@ const MyAppointment = () => {
         },
       }).then((res) => res.json()),
   });
-  console.log(user.accessToken);
+  console.log(userBooking);
 
   return (
     <div>
@@ -33,6 +35,7 @@ const MyAppointment = () => {
               <th>Treatment</th>
               <th>Date</th>
               <th>Time</th>
+              <th>Payment</th>
             </tr>
           </thead>
           <tbody>
@@ -44,6 +47,21 @@ const MyAppointment = () => {
                 <td>{book.treatment}</td>
                 <td>{book.appointmentDate}</td>
                 <td>{book.slot}</td>
+                <td>
+                  {book.price && !book.paid && (
+                    <Link to={`/dashboard/payment/${book._id}`}>
+                      {" "}
+                      <button className=" btn  btn-primary mx-4">
+                        Pay Now
+                      </button>
+                    </Link>
+                  )}
+                  {book.paid && (
+                    <button disabled className="btn btn-xs">
+                      Paid
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

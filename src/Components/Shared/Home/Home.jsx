@@ -4,8 +4,10 @@ import Banner from './Banner/Banner';
 import CareSection from './CareSection/CareSection';
 import InfoSecton from './InfoSection/InfoSecton';
 import Services from './Services/Services';
+import useTitle from '../../../hooks/useTitle';
 
 const Home = () => {
+    useTitle('Home')
     return (
         <div className='mx-15'>
             <Banner/>

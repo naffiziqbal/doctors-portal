@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import useTitle from "../../hooks/useTitle";
 import Loading from "../Loading";
 import ConfirmationModal from "../Shared/ConfiramationModal/ConfirmationModal";
 
 const ManageDoctors = () => {
+  useTitle("Manage Doctors");
+
   const [deleteDoc, setDeleteDoc] = useState(null);
 
   const {

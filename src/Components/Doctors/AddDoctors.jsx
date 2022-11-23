@@ -2,9 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import useTitle from "../../hooks/useTitle";
 import Loading from "../Loading";
 
 const AddDoctors = () => {
+  useTitle('Add Doctors')
   const navigate = useNavigate()
   const {
     handleSubmit,
@@ -24,8 +26,10 @@ const AddDoctors = () => {
 
   const handleDoctor = (data) => {
     const image = data.image[0];
+    console.log(image);
     const formData = new FormData();
     formData.append("image", image);
+    
     const url = `https://api.imgbb.com/1/upload?key=${imgHostKey}`;
 
     fetch(url, {
@@ -62,7 +66,10 @@ const AddDoctors = () => {
             });
         }
       });
+
+      console.log(formData);
   };
+
   if (isLoading) {
     return <Loading />;
   }

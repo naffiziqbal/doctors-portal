@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Allusers from '../Components/AllUsers/Allusers';
 import Dashboard from '../Components/Dashboard/Dashboard';
 import MyAppointment from '../Components/Dashboard/MyAppointment';
+import Payments from '../Components/Dashboard/Payment/Payments';
 import AddDoctors from '../Components/Doctors/AddDoctors';
 import ManageDoctors from '../Components/Doctors/ManageDoctors';
 import Appointment from '../Components/Pages/Appointment/Appointment';
@@ -19,11 +20,8 @@ export const router = createBrowserRouter([
     {
         path: '/',
         element: <Main />,
+        errorElement : <Errors />,
         children: [
-            {
-                path: '*',
-                element: <Errors />
-            },
             {
                 path: '/',
                 element: <Home />
@@ -48,22 +46,39 @@ export const router = createBrowserRouter([
             <DashBoardLayout><Dashboard /></DashBoardLayout>
         </PrivateRoutes>,
         children: [
-            { path: '/dashboard', element: <Dashboard /> },
+            {
+                path: '/dashboard',
+                element: <Dashboard />
+            },
             {
                 path: "/dashboard/myappointment",
                 element: <MyAppointment />
             },
             {
                 path: '/dashboard/allusers',
-                element: <AdminRoutes><Allusers /></AdminRoutes>
+                element:
+                    <AdminRoutes>
+                        <Allusers />
+                    </AdminRoutes>
             },
             {
                 path: '/dashboard/adddoctors',
-                element: <AdminRoutes><AddDoctors/></AdminRoutes>
+                element:
+                    <AdminRoutes>
+                        <AddDoctors />
+                    </AdminRoutes>
             },
             {
                 path: '/dashboard/managedoctors',
-                element: <AdminRoutes><ManageDoctors/></AdminRoutes>
+                element: <AdminRoutes>
+                    <ManageDoctors />
+                </AdminRoutes>
+            },
+            {
+                path: '/dashboard/payment/:id',
+                element:
+                    <Payments />,
+                loader: ({ params }) => fetch(`http://localhost:5000/bookings/${params.id}`)
             },
         ]
     },

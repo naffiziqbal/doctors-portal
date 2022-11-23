@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
+import useTitle from "../../hooks/useTitle";
 import { AuthProvider } from "../../USerContext/UserContext";
 import InputModal from "../Shared/ConfiramationModal/InputModal/InputModal";
 
 const Dashboard = () => {
+  useTitle('Dashboard')
   const [updateUser, setUpdateUser] = useState(null);
   const { user } = useContext(AuthProvider);
   const {
