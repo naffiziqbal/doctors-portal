@@ -2,8 +2,11 @@ import React from 'react';
 
 const Errors = () => {
     return (
-        <div className='absolute top-2/4 left-2/4'>
+        <div className='relative top-3/4 '>
+            <div className="  ">
             <h2 className='text-red-500 text-5xl font-bold'>404 Errro</h2>
+
+            </div>
         </div>
     );
 };
